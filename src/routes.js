@@ -6,12 +6,13 @@ import User from './app/models/User'
 
 const routes = new Router()
 
-routes.get('/', (request, response) => {
-  const user = User.create({
+routes.get('/', async (request, response) => {
+  const user = await User.create({
     id: v4(),
-    name: 'thalysson',
-    email: 'thalys@email.com',
-    password_hash: 'd6sd6s2',
+    name: 'thalyssoon',
+    email: 'thalyseee@email.com',
+    password_hash: 'd6sddd6s2ggg',
+    admin: false,
   })
   return response.json(user)
 })
