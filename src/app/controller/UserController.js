@@ -7,8 +7,8 @@ show() - listar apenas UM
 
 não necessariamente é obrigado ter todos os métodos em um controller, mas não pode ter repetido */
 
-import User from '../models/User'
 import * as Yup from 'yup'
+import User from '../models/User'
 import { v4 } from 'uuid'
 
 class UserController {
@@ -43,6 +43,7 @@ class UserController {
       password,
       admin,
     })
+
     return response.status(201).json({ id: user.id, name, email, admin })
   }
 }
