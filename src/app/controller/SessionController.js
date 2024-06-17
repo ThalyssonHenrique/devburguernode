@@ -6,14 +6,14 @@ import authConfig from '../../config/auth'
 class SessionController {
   async store(request, response) {
     const schema = Yup.object().shape({
-      email: Yup.string().email().required(),
+      email: Yup.string().required(),
       password: Yup.string().required(),
     })
 
     const emailOrPasswordIncorrect = () => {
-      return response.status(401).json({
-        error: 'Make sure your password or email are correct',
-      })
+      return response
+        .status(401)
+        .json({ error: 'Make sure your password or email are correct' })
     }
 
     if (!(await schema.isValid(request.body))) {

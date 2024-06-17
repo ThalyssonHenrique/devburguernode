@@ -13,7 +13,7 @@ export default (request, response, next) => {
   try {
     jwt.verify(token, authConfig.secret, function (err, decoded) {
       if (err) {
-        throw new Error('Token verification failed')
+        throw new Error()
       }
 
       request.userId = decoded.id
