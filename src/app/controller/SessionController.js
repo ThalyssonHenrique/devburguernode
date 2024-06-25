@@ -6,7 +6,7 @@ import authConfig from '../../config/auth'
 class SessionController {
   async store(request, response) {
     const schema = Yup.object().shape({
-      email: Yup.string().required(),
+      email: Yup.string().required().email(),
       password: Yup.string().required(),
     })
 
