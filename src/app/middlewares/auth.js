@@ -5,7 +5,7 @@ export default (request, response, next) => {
   const authToken = request.headers.authorization
 
   if (!authToken) {
-    return response.status(401).json({ error: 'Token not provided' })
+    return response.status(401).json({ error: 'Token is not provided' })
   }
 
   const token = authToken.split(' ')[1]

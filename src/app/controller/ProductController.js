@@ -13,7 +13,7 @@ class ProductController {
       try {
         await schema.validateSync(request.body, { abortEarly: false })
       } catch (err) {
-        return response.status(400).json({ error: err.errors })
+        return response.status(401).json({ error: err.errors })
       }
 
       const { filename: path } = request.file
