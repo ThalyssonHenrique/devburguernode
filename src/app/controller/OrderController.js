@@ -1,12 +1,13 @@
 import * as Yup from 'yup'
 import Product from '../models/Product'
 import Category from '../models/Category'
+import Order from '../schemas/order'
 
 class OrderController {
   async store(request, response) {
     const schema = Yup.object().shape({
       products: Yup.array()
-        .required()
+        .required('the product list is required')
         .of(
           Yup.object().shape({
             id: Yup.number().required(),
@@ -23,45 +24,54 @@ class OrderController {
 
     const productsId = request.body.products.map((product) => product.id)
 
-    const updatedProducts = await Product.findAll({
-      where: {
-        id: productsId,
-      },
-      include: [
-        {
-          model: Category,
-          as: 'category',
-          attributes: ['name'],
+    try {
+      const updatedProducts = await Product.findAll({
+        where: { id: productsId },
+
+        include: [
+          {
+            model: Category,
+            as: 'category',
+            attributes: ['name'],
+          },
+        ],
+      })
+
+      const editedProduct = updatedProducts.map((product) => {
+        const productIndex = request.body.products.findIndex(
+          (requestProduct) => requestProduct.id === product.id,
+        )
+
+        const newProduct = {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          category: product.category.name,
+          url: product.url,
+          quantity: request.body.products[productIndex].quantity,
+        }
+
+        return newProduct
+      })
+
+      const order = {
+        user: {
+          id: request.userId,
+          name: request.userName,
         },
-      ],
-    })
 
-    const editedProduct = updatedProducts.map((product) => {
-      const productIndex = request.body.products.findIndex(
-        (requestProduct) => requestProduct.id === product.id,
-      )
-
-      const newProduct = {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        category: product.category.name,
-        url: product.url,
-        quantity: request.body.products[productIndex].quantity,
+        products: editedProduct,
+        status: 'Pedido Realizado',
       }
+      const orderResponse = await Order.create(order)
 
-      return newProduct
-    })
-
-    const order = {
-      user: {
-        id: request.userId,
-        name: request.userName,
-      },
-      products: editedProduct,
+      return response.status(201).json(orderResponse)
+    } catch (err) {
+      console.log(err)
+      return response
+        .status(500)
+        .json({ error: 'Internal error creating order.' })
     }
-
-    return response.status(201).json(editedProduct)
   }
 }
 

@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
-import User from '../models/User'
 import jwt from 'jsonwebtoken'
 import authConfig from '../../config/auth'
+import User from '../models/User'
 
 class SessionController {
   async store(request, response) {
@@ -23,7 +23,9 @@ class SessionController {
     const { email, password } = request.body
 
     const user = await User.findOne({
-      where: { email },
+      where: {
+        email,
+      },
     })
 
     if (!user) {

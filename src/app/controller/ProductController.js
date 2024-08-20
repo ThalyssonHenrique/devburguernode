@@ -28,7 +28,7 @@ class ProductController {
         path,
       })
 
-      return response.json(product)
+      return response.status(201).json(product)
     } catch (err) {
       console.log(err)
     }

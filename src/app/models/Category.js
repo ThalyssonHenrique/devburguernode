@@ -10,7 +10,6 @@ class Category extends Model {
         sequelize,
       },
     )
-
     return this
   }
 }
