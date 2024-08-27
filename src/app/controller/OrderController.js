@@ -2,12 +2,13 @@ import * as Yup from 'yup'
 import Product from '../models/Product'
 import Category from '../models/Category'
 import Order from '../schemas/order'
+import User from '../models/User'
 
 class OrderController {
   async store(request, response) {
     const schema = Yup.object().shape({
       products: Yup.array()
-        .required('the product list is required')
+        .required()
         .of(
           Yup.object().shape({
             id: Yup.number().required(),
@@ -94,6 +95,12 @@ class OrderController {
       return response.status(400).json({ error: err.errors })
     }
 
+    const { admin: isAdmin } = await User.findByPk(request.userId)
+
+    if (!isAdmin) {
+      return response.status(401).json()
+    }
+
     const { id } = request.params
     const { status } = request.body
 
@@ -106,4 +113,5 @@ class OrderController {
     return response.json({ message: 'Status updated sucessfully' })
   }
 }
+
 export default new OrderController()
