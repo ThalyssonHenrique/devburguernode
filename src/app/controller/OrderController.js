@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import Product from '../models/Product'
 import Category from '../models/Category'
-import Order from '../schemas/order'
+import Order from '../schemas/Order'
 import User from '../models/User'
 
 class OrderController {
@@ -102,6 +102,7 @@ class OrderController {
     }
 
     const { id } = request.params
+
     const { status } = request.body
 
     try {
@@ -110,7 +111,7 @@ class OrderController {
       return response.status(400).json({ error: err.message })
     }
 
-    return response.json({ message: 'Status updated sucessfully' })
+    return response.status(201).json({ message: 'Status updated sucessfully' })
   }
 }
 

@@ -7,6 +7,7 @@ const OrderSchema = mongoose.Schema(
         type: String,
         required: true,
       },
+
       name: {
         type: String,
         required: true,
@@ -19,18 +20,22 @@ const OrderSchema = mongoose.Schema(
           type: Number,
           required: true,
         },
+
         name: {
           type: String,
           required: true,
         },
+
         price: {
           type: Number,
           required: true,
         },
+
         category: {
           type: String,
           required: true,
         },
+
         url: {
           type: String,
           required: true,
